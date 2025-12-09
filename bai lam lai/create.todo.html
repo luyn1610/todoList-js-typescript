@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+</head>
+
+<body>
+   <h1>create todo</h1>
+   <input type="text">
+   <button id="save">save</button>
+   <script>
+
+      const saveBtn = document.getElementById("save");
+      // lưu todo
+      saveBtn.addEventListener("click", () => {
+         const input = document.querySelector("input");
+         //lay string tu local storage xong roi chuyen tro lai dang object
+         const todo = JSON.parse(localStorage.getItem("todo"))
+         //lay gia tri in put
+         //tao object todo moi
+         const newTodo = {
+            id: Math.floor(Math.random() * 100000000),
+            name: input.value
+         }
+
+         if (todo) {
+
+            todo.push(newTodo)
+            //luu input vao localstorage
+            localStorage.setItem("todo", JSON.stringify(todo))
+         } else {
+            //chua co todo thi them moi
+            localStorage.setItem("todo", JSON.stringify([newTodo]))
+
+         }
+         window.location.href = "./video70.html"
+      })
+
+
+   </script>
+</body>
+
+</html>
