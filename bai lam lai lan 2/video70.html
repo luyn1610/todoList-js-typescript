@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+</head>
+
+<body>
+   <h1>todo list table</h1>
+   <a href="./create.todo.html">create todo</a>
+   <table>
+      <thead>
+         <th>id</th>
+         <th>name</th>
+         <th><button>xoa</button></th>
+      </thead>
+      <tbody class="table-data">
+
+      </tbody>
+   </table>
+   <script>
+      const tableData = document.querySelector(".table-data")
+      //lay du lieu tu local storage
+      const todoLists = JSON.parse(localStorage.getItem("todoLists"))
+      //hien thi du lieu len table
+      todoLists.forEach(todoList => {
+
+         tableData.innerHTML += `
+         <tr>
+            <td>${todoList.id}</td>
+            <td>${todoList.name}</td>
+            <td><button class="delete-btn" data-id="${todoList.id}">xoa</button></td>
+            </tr>
+         `
+      });
+      //thao tac xoa du lieu
+      console.log(todoLists)
+      // lay phan tu xoa
+      const deleteBtns = document.querySelectorAll(".delete-btn")
+
+      //tao su kien click cho nut xoa
+      deleteBtns.forEach(deleteBtn => {
+
+         //xu ly su kien xoa
+         deleteBtn.addEventListener("click", () => {
+
+            // lay id cua todo can xoa
+            const id = deleteBtn.getAttribute("data-id")
+
+            // lay ham filter de loc bo id can xoa
+            const newTodoLists = todoLists.filter((todo) => todo.id + "" !== id)
+            console.log(newTodoLists)
+            //cap nhat lai local storage
+            localStorage.setItem("todoLists", JSON.stringify(newTodoLists))
+            //reload lai trang web
+            location.reload()
+         })
+      });
+
+   </script>
+</body>
+
+</html>

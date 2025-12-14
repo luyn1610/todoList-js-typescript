@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+</head>
+
+<body>
+   <!-- create todo -->
+   <h1>todo list</h1>
+   <input type="text">
+   <button>create todo</button>
+   <script>
+      const input = document.querySelector("input")
+      const createTodoBtn = document.querySelector("button")
+      // const todoLists = []
+      //sau khi an create todo
+      createTodoBtn.addEventListener("click", () => {
+
+         //lay gia tri to do
+         const newTodo =
+         {
+            id: Math.floor(Math.random() * 10000000),
+            name: input.value
+
+         }
+
+         todoLists = JSON.parse(localStorage.getItem("todoLists"))
+         if (todoLists) {
+
+            todoLists.push(newTodo)
+            localStorage.setItem("todoLists", JSON.stringify(todoLists))
+         } else {
+            const todoLists = []
+            localStorage.setItem("todoLists", JSON.stringify(todoLists))
+
+         }
+         //luu gia tri todo voa local storage
+
+
+         window.location.href = "./video70.html"
+      })
+   </script>
+</body>
+
+</html>
