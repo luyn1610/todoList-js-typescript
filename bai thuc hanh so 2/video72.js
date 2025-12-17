@@ -2,7 +2,6 @@ console.log("video72");
 const fetchBlogs = async () => {
     const res = await fetch("http://localhost:8000/blogs");
     const data = await res.json();
-    console.log(data);
     //insert data to html
     const tbody = document.querySelector("tbody");
     if (data && data.length) {
@@ -13,7 +12,7 @@ const fetchBlogs = async () => {
             <td>${blog.title}</td>
             <td>${blog.author}</td>
             <td>${blog.content}</td>
-            <td><button>xoa</button></td>
+            <td><button class="delete-blog" data-id="${blog.id}">xoa</button></td>
             </tr>
             `;
         });
@@ -35,9 +34,14 @@ const addNewRowToEnd = (blog) => {
             <td>${blog.title}</td>
             <td>${blog.author}</td>
             <td>${blog.content}</td>
-            <td><button>xoa</button></td>
+            <td><button class="delete-blog" data-id="${blog.id}">xoa</button></td>
             </tr>
   `;
+    const btnDelete = newRow.querySelector(".delete-blog");
+    btnDelete.addEventListener("click", async (event) => {
+        const row = btnDelete.closest("tr");
+        row.remove();
+    });
 
     // Thêm dòng vào cuối bảng
     tableBody.appendChild(newRow);
@@ -71,9 +75,36 @@ const handleAddBlog = () => {
         );
         const data = await rawResponse.json();
         addNewRowToEnd(data);
-        console.log("phan hoi api", data);
     });
 };
+const handleDeleteBtns = () => {
+    const btns = document.querySelectorAll(".delete-blog");
+    if (btns) {
+        btns.forEach((btn, index) => {
+            btn.addEventListener("click", async (event) => {
+                const id = btn.getAttribute("data-id");
+                const rawResponse = await fetch(
+                    `http://localhost:8000/blogs/${id}`,
+                    // Sửa endpoint từ posts thành blogs để khớp với lúc lấy dữ liệu
+                    {
+                        method: "DELETE",
+                        headers: {
+                            Accept: "application/json",
+                            "Content-Type":
+                                "application/json",
+                        },
+                    }
+                );
+                const data = await rawResponse.json();
+                //DETETE html row
+                const row = btn.closest("tr");
+                row.remove();
+            });
+        });
+    }
+};
 
-fetchBlogs();
+fetchBlogs().then(() => {
+    handleDeleteBtns();
+});
 handleAddBlog();
